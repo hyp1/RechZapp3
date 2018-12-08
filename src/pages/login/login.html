@@ -1,0 +1,79 @@
+<ion-header>
+
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          </ion-buttons>
+           
+          <ion-title>
+              Anmelden 
+            </ion-title>
+    <ion-buttons end>
+<ng-template [ngIf]="this.auth.isInRole('authenticated user')" [ngIfElse]="headerOut">
+            <button ion-button>
+                <img class="avatar" src="{{this.auth.user.picture}}"> {{auth.user.name}}        
+              </button>
+</ng-template>      
+<ng-template #headerOut>
+            <button ion-button>
+            <ion-icon name="contact"></ion-icon>  {{auth.user.name}}
+            </button>
+</ng-template>
+    </ion-buttons>    
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+<ng-template [ngIf]="this.auth.isInRole('authenticated user')" [ngIfElse]="loggedOut">
+    <ion-item>
+        <ion-label color="secondary">{{auth.HOST}}</ion-label>        
+      </ion-item>
+      <ion-item>
+          <ion-avatar item-start>
+            <img src="{{this.auth.user.picture}}">
+          </ion-avatar>
+          {{ this.auth.user.name }} 
+        </ion-item>
+  <ion-item>
+      
+        <ion-label>Sie sind als {{auth.user.name}} angemeldet</ion-label>        
+      </ion-item>
+        <button ion-button round lightgray full  (click)="this.auth.logout()">Abmelden</button>
+
+</ng-template>      
+<ng-template #loggedOut>
+  <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+            <ion-item>
+              <ion-input placeholder="Benutzername" name="username" id="userField"
+                         type="text" required [(ngModel)]="username" #userField></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input placeholder="Password" name="password" id="passwordField"
+                         type="password" required [(ngModel)]="password"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+          <button ion-button class="submit-btn" full round type="submit"
+                  [disabled]="!loginForm.form.valid">Anmelden
+          </button> 
+        </ion-col>
+      </ion-row>    
+        </form>  
+          
+        <button ion-button round  full  (click)="fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>               
+        <button ion-button round  full  (click)="gotoRegister()">Registrieren</button>         
+  
+    
+    <ion-label color="danger"><a ion-link  href="{{this.auth.HOST}}/user/password" target="_BLANK">Passwort vergessen?</a></ion-label>
+  </ng-template>
+</ion-content>

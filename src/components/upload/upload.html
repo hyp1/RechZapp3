@@ -1,0 +1,89 @@
+<ion-content padding>
+<ion-item>
+        <ion-label color="primary">{{text}}
+        </ion-label>                
+</ion-item>
+<ion-item text-wrap>
+        <ion-label color="primary">Schiessen sie ein Bild mit Ihrer Kamera oder wählen sie eine Datei in ihrem Browser und klicken Sie auf  <ion-icon name="cloud-upload"></ion-icon> Hochladen um die Datei anzuhängen. 
+            </ion-label>  
+</ion-item>
+<ng-template #letupload>
+    <ion-item>
+        <ion-label color="danger" stacked><h2>Natürlich nur, wenn sie angemeldet angemeldet sind.
+        </h2></ion-label> 
+      </ion-item>
+  </ng-template>
+
+<ion-item>
+        <ion-label color="danger" text-wrap>Bitte verdecken Sie persönliche Daten wie Namen, Adressen, Telefonnummern, etc.</ion-label>
+</ion-item>
+      
+<ng-template [ngIf]="awri.isInRole('authenticated user')" [ngIfElse]="letupload">
+
+
+        <div *ngFor="let image of files;index as i">
+                <ion-card><p>{{1+i}}.</p>         
+            
+                    <img fid="-1" id="{{this.fieldname+i}}" src="" name=""> 
+                    <ion-label>{{image.name}}</ion-label>
+                    <ion-row>
+                            <span *ngIf="files[i].name!=''">
+                    <ion-buttons>
+                    <button ion-button left [disabled]="files[i].name==''" title="Entfernen">
+                    <ion-icon name="trash" (click)="removeImage(i)"></ion-icon>
+                </button>
+         
+                <button ion-button right  [disabled]="files[i].uploaded" title="Hochladen">
+                <ion-icon name="cloud-upload" (click)="uploadFile(i)"></ion-icon>            
+            </button>
+  
+        </ion-buttons>    
+    </span>
+        </ion-row>
+            </ion-card>
+        </div>
+
+
+      </ng-template>
+
+      <ng-template [ngIf]="isBrowser()" [ngIfElse]="isApp">
+            <div showWhen="mobileweb"> 
+                    <ion-label color="danger" text-wrap>Im Mobilen Browser können keine Dateien ausgewählt werden. </ion-label>
+                  </div>                      
+    <div hideWhen="mobileweb">
+            <button ion-button [(ngModel)]="toggleFiles" name="toggleFiles" ngDefaultControl (click)="toggleFil()" [disabled]="awri.isInRole('anonymous user')">Dateien</button>
+        <div  *ngIf="toggleFiles">
+            <div *ngIf="!hideUpl">
+                <ion-input  id="filefield0"  type="file" accept="image/*" (change)="this.selectWebFile($event);"></ion-input>
+            </div>
+            </div>
+    </div>
+    
+     <button ion-button [(ngModel)]="toggleVideo" name="toggleVideo" ngDefaultControl (click)="toggleVid()" [disabled]="awri.isInRole('anonymous user')">Kamera</button>
+                 <ion-card>
+                  <ion-item *ngIf="toggleVideo">
+                        <video id="video1" width="100%" height="100%" autoplay style="background-color:black;"></video>
+                        <button id="snap1" ion-button (click)="toggleCam($event)" block>Start Kamera</button>
+                        <canvas id="canvas1" width="640" height="480" style="display:none;"></canvas>
+                        <div *ngIf="!hideUpl">                        
+                        <button id="snap" [disabled]="!togglePhoto"  ion-button (click)="selectWebVideo(this)" block>Photo</button>
+                        </div>
+                  </ion-item>
+                </ion-card>
+            </ng-template>
+            <ng-template #isApp>
+                    <div *ngIf="!hideUpl">
+                     
+                        <button ion-button full (click)="nativeCamera()" [disabled]="awri.isInRole('anonymous user')">Kamera</button>
+                        <button ion-button full (click)="nativeSelectFile()" [disabled]="awri.isInRole('anonymous user')">Dateien</button>            
+                    </div>
+            </ng-template>
+
+            <button ion-button right (click)="uploadAllFiles()" [disabled]="awri.isInRole('anonymous user')"><ion-icon name="cloud-upload" item-start></ion-icon> Alle Hochladen</button>
+            
+        </ion-content>
+
+
+  
+
+

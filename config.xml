@@ -87,4 +87,5 @@
     </plugin>
     <engine name="android" spec="7.1.4" />
     <plugin name="cordova-sqlite-evcore-extbuild-free" spec="0.9.9" />
+    <plugin name="cordova-plugin-camera" spec="4.0.3" />
 </widget>

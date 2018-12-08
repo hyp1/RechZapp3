@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+          </button>
+          </ion-buttons>
+           
+          <ion-title>
+              Registrieren 
+            </ion-title>
+    <ion-buttons end>
+<ng-template [ngIf]="this.auth.isInRole('authenticated user')" [ngIfElse]="headerOut">
+            <button ion-button>
+                <img class="avatar" src="{{this.auth.user.picture}}"> {{auth.user.name}}        
+              </button>
+</ng-template>      
+<ng-template #headerOut>
+            <button ion-button>
+            <ion-icon name="contact"></ion-icon>  {{auth.user.name}}
+            </button>
+</ng-template>
+    </ion-buttons>    
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+  <ion-card-content>Registrieren sie sich auf AWRI um Zugriff auf erweiterte Funktionen zu erhalten.
+     </ion-card-content>
+  </ion-card>
+  <form #registerForm="ngForm" (ngSubmit)="registerUser()" autocomplete="off">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+              <ion-item>
+                  <ion-input placeholder="Username" name="username" id="userField"
+                             type="text" required [(ngModel)]="username" #user></ion-input>
+                </ion-item>
+            <ion-item>
+              <ion-input placeholder="Email" name="email" id="emailField"
+                         type="email" required [(ngModel)]="email" #user></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input placeholder="Password" name="password" id="passwordField"
+                         type="password" required [(ngModel)]="password"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+          <button ion-button round full class="submit-btn" type="submit"
+                  [disabled]="!registerForm.form.valid">Profil erstellen
+          </button>        
+          </ion-col>
+      </ion-row>        
+    </form>
+    <button ion-button round full (click)="fblogin()"> <ion-icon name="logo-facebook"></ion-icon>Facebook</button>     
+
+</ion-content>
